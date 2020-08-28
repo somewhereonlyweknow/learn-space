@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+    <style>
+      @keyframes test {
+        0% {
+          transform: rotate(0);
+        }
+
+        100% {
+          transform: rotate(1turn);
+        }
+      }
+      .box {
+        width: 400px;
+        height: 400px;
+      }
+      .transition {
+        background-color: #000;
+        /* animation: test 2s linear 3; */
+        transform: translateX(10px);
+        will-change: transform;
+      }
+
+      .box2 {
+        background-color: #eee;
+        transform: translateX(20px);
+      }
+
+      .box3 {
+        /* position: fixed; */
+        padding: 20px;
+        background-color: aqua;
+        /* opacity: 0.1; */
+      }
+
+      .box4 {
+        /* position: relative; */
+        transform: translateY(20px);
+        /* overflow: auto; */
+        background-color:bisque;
+        /* z-index: 2; */
+      }
+
+      .box5 {
+        background-color:chartreuse;
+        transform: translateZ(0);
+      }
+
+      .box6 {
+        background-color:crimson;
+        transform: translateY(-20px);
+      }
+
+      .box6:hover {
+        transform: translateZ(0);
+      }
+
+      .box7 {
+        background-color:coral;
+        transform: translateY(-40px);
+      }
+
+      .box8 {
+        background-color:chocolate;
+        transform: translateY(-60px);
+      }
+
+      .box-test {
+        width: 200px;
+        height: 200px;
+        margin-bottom: 10px;
+        filter: grayscale(1);
+        background-color: greenyellow;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <!-- <template v-for="n in 10" :key="n">
+        <p>111</p>
+      </template> -->
+      <!-- <div class="box transition"></div>
+      <div class="box box2"></div>
+      <div class="box box3">
+        <div class="box transition"></div>
+      </div>
+
+      <div class="box box4"></div>
+
+      <div class="box box5"></div>
+      <div class="box box6"></div>
+      <div class="box box7"></div>
+      <div class="box box8"></div> -->
+
+      <div class="box-test" v-for="n in 50" :key="n"></div>
+    </div>
+    <script src="https://cb.cdn.changbaimg.com/js/vue.js"></script>
+
+    <script>
+      function init(){
+        return new Vue({
+          el: '#app'
+        })
+      }
+      init();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,52 @@
+<style>
+  .outer {
+    width: 200px;
+    height: 200px;
+    background-color: aqua;
+  }
+  .inner {
+    width: 100px;
+    height: 100px;
+    background-color: #eee;
+  }
+</style>
+<div class="outer">
+<div class="inner"></div>
+</div>
+
+<script>
+
+var outer = document.querySelector('.outer');
+var inner = document.querySelector('.inner');
+
+function onClick() {
+  console.log('inner');
+  setTimeout(function () {
+    console.log('inner-timeout');
+  }, 0);
+  Promise.resolve().then(function () {
+    console.log('inner-promise');
+  });
+
+}
+function onClick2() {
+console.log('outer');
+
+setTimeout(function () {
+    console.log('outer-timeout');
+}, 0);
+
+Promise.resolve().then(function () {
+    console.log('outer-promise');
+});
+}
+
+inner.addEventListener('click', onClick);
+outer.addEventListener('click', onClick2);
+
+inner.click();
+
+// document.body.click()
+// document.body.dispatchEvent(new Event('click'))
+// console.log('done')
+</script>

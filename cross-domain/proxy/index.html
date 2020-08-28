@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+  </head>
+  <body></body>
+  <script>
+    let xhr = new XMLHttpRequest();
+    xhr.open('get', 'http://localhost:3004/test');
+    xhr.onreadystatechange = function () {
+      if(xhr.readyState === 4 && 300 >= xhr.status&&xhr.status >= 200) {
+        console.log(xhr.response);
+      }
+    };
+    xhr.send();
+  </script>
+</script>
+</html>
