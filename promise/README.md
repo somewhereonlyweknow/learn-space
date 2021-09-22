@@ -532,7 +532,7 @@ module.exports = MyPromise;
 ```
 
 ### 其他函数
-```
+```javascript
 // catch函数
 MyPromise.prototype.catch = function(onRejected) {
   return this.then(null, onRejected);
@@ -784,7 +784,7 @@ function loadImg(url) {
 }
 ```
 
-```
+```javascript
 function limitLoad(urls, handler, limit) {
   const urls2 = [].concat(urls); // 拷贝一份url
   
