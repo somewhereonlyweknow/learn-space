@@ -7,7 +7,7 @@
 只考虑成功情况，不考虑rejected。面试的时候如果手写Promise，可以直接写个简易版的，毕竟主要考的链式调用，如果写完整的Promise，面试就不用干别的了
 
 来一个网上的20行代码实现链式调用
-```
+```javascript
 function SimplePromise(excutor) {
   this.callbacks = [];
   
@@ -48,7 +48,7 @@ Simple.prototype.then = function(onResolved) {
 then的onResolved返回值不同，处理不同   
 
 1.返回是一个正常值，例如return 5，直接将该值传给promise2就好了，再次调用then方法时，也能拿到这个返回值，当promise1 resolved的时候，直接返回一个resolved的promise，例```get(url).then(JSON.parse).then()``` 当get方法的promise resolved，直接经过JSON.parse处理，返回一个新的promise，resolve经过处理的参数给下一个then函数。
-```
+```javascript
 new SimplePromise((resolve) => {
   setTimeout(() => {
     resolve(1);
@@ -73,7 +73,7 @@ promise2 = new SimplePromise(resolve => {
 所以x是一个promise，调用x的then方法，x.then(resolve), 等待内部的promise resolved后，才去resolved then方法返回的promise，实现链式
 
 当返回一个Promise时，then1被放倒了promise1的callbacks, 500ms后resolve，执行then1，返回了一个Promise，生成的代码见解析，相当于返回的promise2状态由内部的promise3来决定，promise3 resolved后promise2才会resolved，然后执行then2
-```
+```javascript
 new SimplePromise(resolve => {
   setTimeout(() => {
     resolve(2);
@@ -107,7 +107,7 @@ promise2 = new Promise((resolve) => {
 
 ### resolve为啥异步执行(setTimeout)
 考虑了很久终于想明白了，上代码
-```
+```javascript
 new SimplePromise((resolve) => {
   resolve(1);
 }).then(res => {
@@ -123,7 +123,7 @@ new SimplePromise((resolve) => {
 有了上面的思路，咱们实现一个Promise
 ### 构造函数
 包含状态，两个回调队列，然后执行传入的函数。
-```
+```javascript
 function MyPromise(excutor) {
   this.onResolvedCallback = [];
   this.onRejectedCallback = [];
@@ -135,7 +135,7 @@ function MyPromise(excutor) {
 ```
 
 resolve和rejecte没有定义，然后excurot 直接throw Error怎么办呢，完善构造函数
-```
+```javascript
 function MyPromise(excutor) {
   this.onResolvedCallback = [];
   this.onRejectedCallback = [];
@@ -179,7 +179,7 @@ function MyPromise(excutor) {
 
 ### then方法
 then方法定义在prototype，为啥？你猜呢。then方法是给MyPromise实例来调用，不能每一个实例上都部署一个吧，所以写到原型上。
-```
+```javascript
 MyPromise.prototype.then = function(onResolved, onRejected) {
   let promise2;
 
@@ -259,7 +259,7 @@ MyPromise.prototype.then = function(onResolved, onRejected) {
   }
 }
 ```
-```
+```javascript
 // Promise rejected catch
 /**
  * 当onRejected为空函数时，也相当于捕获了，会继续执行then
@@ -286,7 +286,7 @@ let promise = Promise.reject(111).then(v => {
 ### 值穿透
 
 Promise.resolve(1).then().then().then(console.log(r)); 当onResolved，onRejected不是函数时，会有值穿透现象，这个怎么解决呢，在判断onResolved和onRejected是进行操作，上代码
-```
+```javascript
 onResolved = typeof onResolved === 'function' ? onResolved : function(v){ return v };
 
 /**
@@ -311,7 +311,7 @@ onRejected直接throw，后续的promise一直rejected，一直throw相同的rea
 
 #### 更复杂的返回值情况
 实现[Promise/A+规范](https://juejin.im/post/5c4b0423e51d4525211c0fbc)。
-```
+```javascript
 function resolvePromise(promise, x, resolve, reject) {
   let thenCallOrThrow = false; // 用于2.3.3.3.3 ，保证resolve和reject优先第一次调用
   
@@ -359,11 +359,11 @@ function resolvePromise(promise, x, resolve, reject) {
 
 ### 完整代码
 测试命令：  
-```
+```bash
 $ npm install promises-aplus-tests
 $ promises-aplus-tests your.js
 ```
-```
+```javascript
 function MyPromise(excutor) {
   this.onResolvedCallback = [];
   this.onRejectedCallback = [];
@@ -637,7 +637,7 @@ MyPromise.reject = function(arg) {
 
 ## Promise面试题
 ### 使用Promise实现每隔1秒输出1,2,3
-```
+```javascript
 const arr = [1, 2, 3];
 
 arr.reduce((queue, item) => {
@@ -653,7 +653,7 @@ arr.reduce((queue, item) => {
 
 ### 使用Promise实现红绿灯交替重复亮
 红灯3秒亮一次，黄灯2秒亮一次，绿灯1秒亮一次；如何让三个灯不断交替重复亮灯？（用Promise实现）三个亮灯函数已经存在：
-```
+```javascript
 function red() {
     console.log('red');
 }
@@ -665,7 +665,7 @@ function yellow() {
 }
 ```
 解法：
-```
+```javascript
 // 暴力解
 const arr = [3, 2, 1]; // 时间
 
@@ -712,7 +712,7 @@ step();
 
 ### 实现mergePromise函数
 实现mergePromise函数，把传进去的数组按顺序先后执行，并且把返回的数据先后放到数组data中。
-```
+```javascript
 function mergePromise(promises) {
   let data = [];
   
@@ -732,7 +732,7 @@ function mergePromise(promises) {
 ```
 
 ### 封装一个请求的Promsie
-```
+```javascript
 function get(url) {
   return new Promise((resolve, reject) => {
     const req = new XMLHttpRequest();
@@ -758,7 +758,7 @@ function get(url) {
 
 ### 限制异步操作的并发个数并尽可能快的完成全部
 首先，肯定要同时跑最大并发数的请求，怎么保证尽快完成呢，其中又完成的了，立即替换。
-```
+```javascript
 var urls = [
   "https://hexo-blog-1256114407.cos.ap-shenzhen-fsi.myqcloud.com/AboutMe-painting1.png",
   "https://hexo-blog-1256114407.cos.ap-shenzhen-fsi.myqcloud.com/AboutMe-painting2.png",
